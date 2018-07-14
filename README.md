@@ -7,6 +7,7 @@ Sample terraform scripts to launch a single ec2 node under an ASG in a subnet.
 * VPC  and a Subnet
 * Securitygroups
 * Keypair
+* SNS topic to send AutoScaling notifications
 
 
 ## Input varibales
