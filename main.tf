@@ -75,3 +75,27 @@ resource "aws_autoscaling_notification" "single_node_asg_notifications" {
   ]
   topic_arn = "${var.sns_topic}"
 }
+
+resource "aws_elb" "single_node_asg_elb" {
+  name = "${var.instance_name}-elb"
+  security_groups = ["${split(",", var.security_group)}"]
+  subnets = ["${split(",", var.subnets_id)}"]
+  internal = "true"
+
+  listener {
+    instance_port = "${var.instance_port}"
+    instance_protocol = "${var.instance_protocol}"
+    lb_port = "${var.instance_port}"
+    lb_protocol = "${var.instance_protocol}"
+  }
+  cross_zone_load_balancing = true
+
+  tags {
+   Name="${var.instance_name}-elb"
+  }
+}
+
+resource "aws_autoscaling_attachment" "single_node_asg_attachment" {
+  autoscaling_group_name = "${aws_autoscaling_group.single_node_asg.name}"
+  elb                    = "${aws_elb.single_node_asg_elb.name}"
+}

@@ -59,3 +59,9 @@ variable "asg_desired_capacity" {
 variable "asg_max_size" {
   default = "1"
 }
+variable "instance_port" {
+  default = "22"
+}
+variable "instance_protocol" {
+  default = "TCP"
+}
